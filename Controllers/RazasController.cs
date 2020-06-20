@@ -17,56 +17,56 @@ namespace MascotasApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class MascotasTipoController : ControllerBase
+    public class RazasController : ControllerBase
     {
         private readonly MascotasContext _context;
 
 
-        public MascotasTipoController(MascotasContext context)
+        public RazasController(MascotasContext context)
         {
             _context = context;
 
         }
 
-        // GET: api/Usuario
+        // GET: api/Razas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MascotasTipo>>> GetMascotasTipos()
+        public async Task<ActionResult<IEnumerable<Razas>>> GetRazas()
         {
 
-            IEnumerable<MascotasTipo> mascotasTipos = await _context.MascotasTipo.ToListAsync();
+            IEnumerable<Razas> razas = await _context.Razas.ToListAsync();
 
-            return mascotasTipos.ToList();
+            return razas.ToList();
         }
 
-        // GET: api/MascotasTipo/5
+        // GET: api/Razas/5
         [HttpGet("{id}")]
 
-        public async Task<ActionResult<MascotasTipo>> GetMascotasTipo(int id)
+        public async Task<ActionResult<Razas>> GetRaza(int id)
         {
-            var mascotasTipo = await _context.MascotasTipo.FindAsync(id);
+            var razas = await _context.Razas.FindAsync(id);
 
-            if (mascotasTipo == null)
+            if (razas == null)
             {
                 return NotFound();
             }
 
-            return mascotasTipo;
+            return razas;
         }
 
 
-        // PUT: api/MascotasTipo/5
+        // PUT: api/Razas/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> PutMascotasTipo(int id, [FromBody] MascotasTipo mascotastipo)
+        public async Task<IActionResult> PutRazas(int id, [FromBody] Razas razas)
         {
-            if (id != mascotastipo.Id)
+            if (id != razas.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(mascotastipo).State = EntityState.Modified;
+            _context.Entry(razas).State = EntityState.Modified;
 
             try
             {
@@ -74,7 +74,7 @@ namespace MascotasApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MascotasTipoExists(id))
+                if (!RazasExists(id))
                 {
                     return NotFound();
                 }
@@ -87,27 +87,27 @@ namespace MascotasApi.Controllers
             return NoContent();
         }
 
-        // PUT: api/Usuario/5
+        // PUT: api/Razas/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPatch("{id}")]
 
-        public async Task<IActionResult> PatchMascotasTipo(int id, [FromBody] JsonPatchDocument<MascotasTipo> MascotasTipoPatch)
+        public async Task<IActionResult> PatchRazas(int id, [FromBody] JsonPatchDocument<Razas> RazasPatch)
         {
 
 
-            MascotasTipo mascotasTipo = await _context.MascotasTipo.FirstOrDefaultAsync(u => u.Id == id);
+            Razas razas = await _context.Razas.FirstOrDefaultAsync(u => u.Id == id);
 
-            if (mascotasTipo == null)
+            if (razas == null)
             {
                 return NotFound();
             }
 
             try
             {
-                MascotasTipoPatch.ApplyTo(mascotasTipo);
+                RazasPatch.ApplyTo(razas);
 
-                _context.Entry(mascotasTipo).State = EntityState.Modified;
+                _context.Entry(razas).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
 
@@ -115,7 +115,7 @@ namespace MascotasApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MascotasTipoExists(id))
+                if (!RazasExists(id))
                 {
                     return NotFound();
                 }
@@ -128,17 +128,17 @@ namespace MascotasApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Usuario
+        // POST: api/Razas
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         //[Authorize(Roles = Roles.Admin)]
         [HttpPost]
 
-        public async Task<ActionResult<Mascotas>> PostMascotasTipo(MascotasTipo mascotasTipo)
+        public async Task<ActionResult<Razas>> PostRazas(Razas razas)
         {
 
 
-            _context.MascotasTipo.Add(mascotasTipo);
+            _context.Razas.Add(razas);
 
             await _context.SaveChangesAsync();
 
@@ -147,26 +147,26 @@ namespace MascotasApi.Controllers
 
 
 
-        // DELETE: api/Usuario/5
+        // DELETE: api/Razas/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<MascotasTipo>> DeleteMascotasTipo(int id)
+        public async Task<ActionResult<Razas>> DeleteRazas(int id)
         {
-            var mascotasTipo = await _context.MascotasTipo.FindAsync(id);
+            var razas = await _context.Razas.FindAsync(id);
 
-            if (mascotasTipo == null)
+            if (razas == null)
             {
                 return NotFound();
             }
 
-            _context.MascotasTipo.Remove(mascotasTipo);
+            _context.Razas.Remove(razas);
             await _context.SaveChangesAsync();
 
             return Ok();
         }
 
-        private bool MascotasTipoExists(int id)
+        private bool RazasExists(int id)
         {
-            return _context.MascotasTipo.Any(e => e.Id == id);
+            return _context.Razas.Any(e => e.Id == id);
         }
 
     }
