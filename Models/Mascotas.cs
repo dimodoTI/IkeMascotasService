@@ -11,6 +11,7 @@ namespace MascotasApi.Models
         public DateTime FechaNacimiento { get; set; }
         public string Foto { get; set; }
         public bool Activo { get; set; }
+        public Razas Raza { get; set; }
 
     }
 }

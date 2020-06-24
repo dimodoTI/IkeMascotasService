@@ -4,14 +4,16 @@ using MascotasApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MascotasApi.Migrations
 {
     [DbContext(typeof(MascotasContext))]
-    partial class MascotasContextModelSnapshot : ModelSnapshot
+    [Migration("20200623161730_ForeingKeys")]
+    partial class ForeingKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +40,9 @@ namespace MascotasApi.Migrations
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RazaId")
+                        .HasColumnType("int");
+
                     b.Property<int>("idRaza")
                         .HasColumnType("int");
 
@@ -46,7 +51,7 @@ namespace MascotasApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("idRaza");
+                    b.HasIndex("RazaId");
 
                     b.ToTable("Mascotas");
                 });
@@ -82,12 +87,15 @@ namespace MascotasApi.Migrations
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MascotasTipoId")
+                        .HasColumnType("int");
+
                     b.Property<int>("idMascotasTipo")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("idMascotasTipo");
+                    b.HasIndex("MascotasTipoId");
 
                     b.ToTable("Razas");
                 });
@@ -95,19 +103,15 @@ namespace MascotasApi.Migrations
             modelBuilder.Entity("MascotasApi.Models.Mascotas", b =>
                 {
                     b.HasOne("MascotasApi.Models.Razas", "Raza")
-                        .WithMany("Mascotas")
-                        .HasForeignKey("idRaza")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("RazaId");
                 });
 
             modelBuilder.Entity("MascotasApi.Models.Razas", b =>
                 {
                     b.HasOne("MascotasApi.Models.MascotasTipo", "MascotasTipo")
-                        .WithMany("Razas")
-                        .HasForeignKey("idMascotasTipo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("MascotasTipoId");
                 });
 #pragma warning restore 612, 618
         }
