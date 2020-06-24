@@ -12,6 +12,7 @@ using Microsoft.OData.Edm;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MascotasApi.Helpers;
 
 
 namespace MascotasApi
@@ -29,12 +30,14 @@ namespace MascotasApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddNewtonsoftJson();
-            services.AddDbContext<MascotasContext>(opt =>
-                            opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAuthorization();
             services.AddControllers();
             services.AddOData();
 
-            var key = Encoding.ASCII.GetBytes("gsdfñlkjgsdfñlkjdgfñlgkjdflogkjdflkjglkdfjgkjfkjfkjgfkjgfkjgfkgjfkjgfkjgf");
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             services.AddAuthentication(x =>
             {
@@ -54,6 +57,9 @@ namespace MascotasApi
                 };
             });
 
+            services.AddDbContext<MascotasContext>(opt =>
+                            opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +70,7 @@ namespace MascotasApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -73,9 +79,8 @@ namespace MascotasApi
               .AllowAnyMethod()
               .AllowAnyHeader());
 
-            app.UseAuthorization();
             app.UseAuthentication();
-
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
                         {
@@ -90,6 +95,9 @@ namespace MascotasApi
             odataBuilder.EntitySet<Mascotas>("MascotasQuery");
             odataBuilder.EntitySet<Razas>("RazasQuery");
             odataBuilder.EntitySet<MascotasTipo>("MascotasTipoQuery");
+            odataBuilder.EntitySet<Vacunas>("VacunasQuery");
+            odataBuilder.EntitySet<Calendario>("CalendarioQuery");
+            odataBuilder.EntitySet<MascotasVacunas>("MascotasVacunasQuery");
 
             return odataBuilder.GetEdmModel();
         }

@@ -9,6 +9,7 @@ using MascotasApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.JsonPatch;
+using MascotasApi.Helpers;
 
 
 
@@ -20,47 +21,27 @@ namespace MascotasApi.Controllers
     public class MascotasController : ControllerBase
     {
         private readonly MascotasContext _context;
-
+        private readonly Permissions _permissions;
 
         public MascotasController(MascotasContext context)
         {
             _context = context;
 
-        }
+            _permissions = new Permissions();
 
-        // GET: api/Mascotas
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Mascotas>>> GetMascotas()
-        {
-
-            IEnumerable<Mascotas> mascotas = await _context.Mascotas.ToListAsync();
-
-            return mascotas.ToList();
-        }
-
-        // GET: api/Mascotas/5
-        [HttpGet("{id}")]
-
-        public async Task<ActionResult<Mascotas>> GetMascota(int id)
-        {
-            var mascotas = await _context.Mascotas.FindAsync(id);
-
-            if (mascotas == null)
-            {
-                return NotFound();
-            }
-
-            return mascotas;
         }
 
 
-        // PUT: api/Mascotas/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
         [HttpPut("{id}")]
 
         public async Task<IActionResult> PutMascotas(int id, [FromBody] Mascotas mascotas)
         {
+            if (!_permissions.isOwnerOrAdmin(this.User, mascotas.idUsuario))
+            {
+                return Forbid();
+            }
+
             if (id != mascotas.Id)
             {
                 return BadRequest();
@@ -95,12 +76,16 @@ namespace MascotasApi.Controllers
         public async Task<IActionResult> PatchMascotas(int id, [FromBody] JsonPatchDocument<Mascotas> MascotasPatch)
         {
 
-
             Mascotas mascotas = await _context.Mascotas.FirstOrDefaultAsync(u => u.Id == id);
 
             if (mascotas == null)
             {
                 return NotFound();
+            }
+
+            if (!_permissions.isOwnerOrAdmin(this.User, mascotas.idUsuario))
+            {
+                return Forbid();
             }
 
             try
@@ -136,8 +121,10 @@ namespace MascotasApi.Controllers
 
         public async Task<ActionResult<Mascotas>> PostMascotas(Mascotas mascotas)
         {
-
-
+            if (!_permissions.isAdmin(this.User))
+            {
+                mascotas.idUsuario = _permissions.getUserId(this.User);
+            }
             _context.Mascotas.Add(mascotas);
 
             await _context.SaveChangesAsync();
@@ -151,11 +138,16 @@ namespace MascotasApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Mascotas>> DeleteMascotas(int id)
         {
+
             var mascotas = await _context.Mascotas.FindAsync(id);
 
             if (mascotas == null)
             {
                 return NotFound();
+            }
+            if (!_permissions.isOwnerOrAdmin(this.User, mascotas.idUsuario))
+            {
+                return Forbid();
             }
 
             _context.Mascotas.Remove(mascotas);

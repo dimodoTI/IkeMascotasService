@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MascotasApi.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -17,12 +16,13 @@ namespace MascotasApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class RazasController : ControllerBase
+
+    public class VacunasController : ControllerBase
     {
         private readonly MascotasContext _context;
 
 
-        public RazasController(MascotasContext context)
+        public VacunasController(MascotasContext context)
         {
             _context = context;
 
@@ -32,14 +32,14 @@ namespace MascotasApi.Controllers
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> PutRazas(int id, [FromBody] Razas razas)
+        public async Task<IActionResult> Put(int id, [FromBody] Vacunas vacunas)
         {
-            if (id != razas.Id)
+            if (id != vacunas.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(razas).State = EntityState.Modified;
+            _context.Entry(vacunas).State = EntityState.Modified;
 
             try
             {
@@ -47,7 +47,7 @@ namespace MascotasApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RazasExists(id))
+                if (!Exists(id))
                 {
                     return NotFound();
                 }
@@ -60,28 +60,26 @@ namespace MascotasApi.Controllers
             return NoContent();
         }
 
-        // PUT: api/Razas/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
         [HttpPatch("{id}")]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> PatchRazas(int id, [FromBody] JsonPatchDocument<Razas> RazasPatch)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<Vacunas> vacunasPatch)
         {
 
 
-            Razas razas = await _context.Razas.FirstOrDefaultAsync(u => u.Id == id);
+            Vacunas vacuna = await _context.Vacunas.FirstOrDefaultAsync(u => u.Id == id);
 
-            if (razas == null)
+            if (vacuna == null)
             {
                 return NotFound();
             }
 
             try
             {
-                RazasPatch.ApplyTo(razas);
+                vacunasPatch.ApplyTo(vacuna);
 
-                _context.Entry(razas).State = EntityState.Modified;
+                _context.Entry(vacuna).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
 
@@ -89,7 +87,7 @@ namespace MascotasApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RazasExists(id))
+                if (!Exists(id))
                 {
                     return NotFound();
                 }
@@ -102,18 +100,14 @@ namespace MascotasApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Razas
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[Authorize(Roles = Roles.Admin)]
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
-
-        public async Task<ActionResult<Razas>> PostRazas(Razas razas)
+        public async Task<ActionResult<Vacunas>> Post(Vacunas vacuna)
         {
 
 
-            _context.Razas.Add(razas);
+            _context.Vacunas.Add(vacuna);
 
             await _context.SaveChangesAsync();
 
@@ -122,27 +116,27 @@ namespace MascotasApi.Controllers
 
 
 
-        // DELETE: api/Razas/5
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Razas>> DeleteRazas(int id)
+        public async Task<ActionResult<Vacunas>> Delete(int id)
         {
-            var razas = await _context.Razas.FindAsync(id);
+            var vacuna = await _context.Vacunas.FindAsync(id);
 
-            if (razas == null)
+            if (vacuna == null)
             {
                 return NotFound();
             }
 
-            _context.Razas.Remove(razas);
+            _context.Vacunas.Remove(vacuna);
             await _context.SaveChangesAsync();
 
             return Ok();
         }
 
-        private bool RazasExists(int id)
+        private bool Exists(int id)
         {
-            return _context.Razas.Any(e => e.Id == id);
+            return _context.Vacunas.Any(e => e.Id == id);
         }
 
     }

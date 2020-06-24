@@ -6,23 +6,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MascotasApi.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.JsonPatch;
-
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace MascotasApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
 
-    public class RazasController : ControllerBase
+    public class CalendarioController : ControllerBase
     {
         private readonly MascotasContext _context;
 
 
-        public RazasController(MascotasContext context)
+        public CalendarioController(MascotasContext context)
         {
             _context = context;
 
@@ -32,14 +30,14 @@ namespace MascotasApi.Controllers
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> PutRazas(int id, [FromBody] Razas razas)
+        public async Task<IActionResult> Put(int id, [FromBody] Calendario calendario)
         {
-            if (id != razas.Id)
+            if (id != calendario.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(razas).State = EntityState.Modified;
+            _context.Entry(calendario).State = EntityState.Modified;
 
             try
             {
@@ -47,7 +45,7 @@ namespace MascotasApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RazasExists(id))
+                if (!Exists(id))
                 {
                     return NotFound();
                 }
@@ -60,28 +58,26 @@ namespace MascotasApi.Controllers
             return NoContent();
         }
 
-        // PUT: api/Razas/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
         [HttpPatch("{id}")]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> PatchRazas(int id, [FromBody] JsonPatchDocument<Razas> RazasPatch)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<Calendario> calendarioPatch)
         {
 
 
-            Razas razas = await _context.Razas.FirstOrDefaultAsync(u => u.Id == id);
+            Calendario calendario = await _context.Calendario.FirstOrDefaultAsync(u => u.Id == id);
 
-            if (razas == null)
+            if (calendario == null)
             {
                 return NotFound();
             }
 
             try
             {
-                RazasPatch.ApplyTo(razas);
+                calendarioPatch.ApplyTo(calendario);
 
-                _context.Entry(razas).State = EntityState.Modified;
+                _context.Entry(calendario).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
 
@@ -89,7 +85,7 @@ namespace MascotasApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RazasExists(id))
+                if (!Exists(id))
                 {
                     return NotFound();
                 }
@@ -102,18 +98,15 @@ namespace MascotasApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Razas
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[Authorize(Roles = Roles.Admin)]
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
 
-        public async Task<ActionResult<Razas>> PostRazas(Razas razas)
+        public async Task<ActionResult<Calendario>> Post(Calendario calendario)
         {
 
 
-            _context.Razas.Add(razas);
+            _context.Calendario.Add(calendario);
 
             await _context.SaveChangesAsync();
 
@@ -122,27 +115,27 @@ namespace MascotasApi.Controllers
 
 
 
-        // DELETE: api/Razas/5
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Razas>> DeleteRazas(int id)
+        public async Task<ActionResult<Calendario>> Delete(int id)
         {
-            var razas = await _context.Razas.FindAsync(id);
+            var calendario = await _context.Calendario.FindAsync(id);
 
-            if (razas == null)
+            if (calendario == null)
             {
                 return NotFound();
             }
 
-            _context.Razas.Remove(razas);
+            _context.Calendario.Remove(calendario);
             await _context.SaveChangesAsync();
 
             return Ok();
         }
 
-        private bool RazasExists(int id)
+        private bool Exists(int id)
         {
-            return _context.Razas.Any(e => e.Id == id);
+            return _context.Calendario.Any(e => e.Id == id);
         }
 
     }

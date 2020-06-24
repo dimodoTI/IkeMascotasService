@@ -28,36 +28,9 @@ namespace MascotasApi.Controllers
 
         }
 
-        // GET: api/Usuario
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MascotasTipo>>> GetMascotasTipos()
-        {
 
-            IEnumerable<MascotasTipo> mascotasTipos = await _context.MascotasTipo.ToListAsync();
-
-            return mascotasTipos.ToList();
-        }
-
-        // GET: api/MascotasTipo/5
-        [HttpGet("{id}")]
-
-        public async Task<ActionResult<MascotasTipo>> GetMascotasTipo(int id)
-        {
-            var mascotasTipo = await _context.MascotasTipo.FindAsync(id);
-
-            if (mascotasTipo == null)
-            {
-                return NotFound();
-            }
-
-            return mascotasTipo;
-        }
-
-
-        // PUT: api/MascotasTipo/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> PutMascotasTipo(int id, [FromBody] MascotasTipo mascotastipo)
         {
@@ -91,6 +64,7 @@ namespace MascotasApi.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPatch("{id}")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> PatchMascotasTipo(int id, [FromBody] JsonPatchDocument<MascotasTipo> MascotasTipoPatch)
         {
@@ -128,11 +102,9 @@ namespace MascotasApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Usuario
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[Authorize(Roles = Roles.Admin)]
+
         [HttpPost]
+        [Authorize(Roles = "Admin")]
 
         public async Task<ActionResult<Mascotas>> PostMascotasTipo(MascotasTipo mascotasTipo)
         {
@@ -149,6 +121,7 @@ namespace MascotasApi.Controllers
 
         // DELETE: api/Usuario/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<MascotasTipo>> DeleteMascotasTipo(int id)
         {
             var mascotasTipo = await _context.MascotasTipo.FindAsync(id);

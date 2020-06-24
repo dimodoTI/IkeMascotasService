@@ -5,7 +5,6 @@ namespace MascotasApi.Models
     {
         public int Id { get; set; }
         public int idUsuario { get; set; }
-
         public int idRaza { get; set; }
         public string Nombre { get; set; }
         public DateTime FechaNacimiento { get; set; }
