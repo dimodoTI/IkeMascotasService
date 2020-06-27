@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 namespace MascotasApi.Models
 {
     public class Mascotas
@@ -11,6 +12,7 @@ namespace MascotasApi.Models
         public string Foto { get; set; }
         public bool Activo { get; set; }
         public Razas Raza { get; set; }
+        public List<Reservas> Reservas { get; set; }
 
     }
 }
