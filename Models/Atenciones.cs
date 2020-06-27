@@ -9,6 +9,7 @@ namespace MascotasApi.Models
         public int Id { get; set; }
         public int ReservaId { get; set; }
         public int VeterinarioId { get; set; }
+        public DateTime InicioAtencion { get; set; }
         public DateTime FinAtencion { get; set; }
         public string Diagnostico { get; set; }
         public string Observaciones { get; set; }

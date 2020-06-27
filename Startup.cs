@@ -98,6 +98,11 @@ namespace MascotasApi
             odataBuilder.EntitySet<Vacunas>("VacunasQuery");
             odataBuilder.EntitySet<Calendario>("CalendarioQuery");
             odataBuilder.EntitySet<MascotasVacunas>("MascotasVacunasQuery");
+            odataBuilder.EntitySet<Configuracion>("Configuracion");
+            odataBuilder.EntitySet<Puestos>("PuestosQuery");
+            odataBuilder.EntitySet<Tramos>("TramosQuery");
+            odataBuilder.EntitySet<Reservas>("ReservasQuery");
+            odataBuilder.EntitySet<Atenciones>("AtencionesQuery");
 
             return odataBuilder.GetEdmModel();
         }

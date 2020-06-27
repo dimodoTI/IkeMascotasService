@@ -4,14 +4,16 @@ using MascotasApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MascotasApi.Migrations
 {
     [DbContext(typeof(MascotasContext))]
-    partial class MascotasContextModelSnapshot : ModelSnapshot
+    [Migration("20200627154501_SacarCampoFechiInicioenTramo")]
+    partial class SacarCampoFechiInicioenTramo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,9 +44,6 @@ namespace MascotasApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FinAtencion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("InicioAtencion")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Observaciones")
