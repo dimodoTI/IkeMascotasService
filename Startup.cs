@@ -98,7 +98,7 @@ namespace MascotasApi
             odataBuilder.EntitySet<Vacunas>("VacunasQuery");
             odataBuilder.EntitySet<Calendario>("CalendarioQuery");
             odataBuilder.EntitySet<MascotasVacunas>("MascotasVacunasQuery");
-            odataBuilder.EntitySet<Configuracion>("Configuracion");
+            odataBuilder.EntitySet<Configuracion>("ConfiguracionQuery");
             odataBuilder.EntitySet<Puestos>("PuestosQuery");
             odataBuilder.EntitySet<Tramos>("TramosQuery");
             odataBuilder.EntitySet<Reservas>("ReservasQuery");
