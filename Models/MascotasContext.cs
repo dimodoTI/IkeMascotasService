@@ -23,8 +23,9 @@ namespace MascotasApi.Models
         public DbSet<Mascotas> Mascotas { get; set; }
         public DbSet<MascotasTipo> MascotasTipo { get; set; }
         public DbSet<Razas> Razas { get; set; }
-        public DbSet<Vacunas> Vacunas { get; set; }
         public DbSet<Calendario> Calendario { get; set; }
+        public DbSet<Vacunas> Vacunas { get; set; }
+
         public DbSet<MascotasVacunas> MascotasVacunas { get; set; }
         public DbSet<Configuracion> Configuracion { get; set; }
         public DbSet<Puestos> Puestos { get; set; }

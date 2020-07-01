@@ -4,14 +4,16 @@ using MascotasApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MascotasApi.Migrations
 {
     [DbContext(typeof(MascotasContext))]
-    partial class MascotasContextModelSnapshot : ModelSnapshot
+    [Migration("20200630221238_VacunasCalendarios")]
+    partial class VacunasCalendarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,12 +334,7 @@ namespace MascotasApi.Migrations
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MascotaTipoId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("MascotaTipoId");
 
                     b.ToTable("Vacunas");
                 });
@@ -419,15 +416,6 @@ namespace MascotasApi.Migrations
                     b.HasOne("MascotasApi.Models.Puestos", "Puesto")
                         .WithMany("Tramos")
                         .HasForeignKey("PuestoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MascotasApi.Models.Vacunas", b =>
-                {
-                    b.HasOne("MascotasApi.Models.MascotasTipo", "MascotaTipo")
-                        .WithMany("Vacunas")
-                        .HasForeignKey("MascotaTipoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

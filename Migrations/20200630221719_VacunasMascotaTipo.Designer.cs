@@ -4,14 +4,16 @@ using MascotasApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MascotasApi.Migrations
 {
     [DbContext(typeof(MascotasContext))]
-    partial class MascotasContextModelSnapshot : ModelSnapshot
+    [Migration("20200630221719_VacunasMascotaTipo")]
+    partial class VacunasMascotaTipo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -426,7 +428,7 @@ namespace MascotasApi.Migrations
             modelBuilder.Entity("MascotasApi.Models.Vacunas", b =>
                 {
                     b.HasOne("MascotasApi.Models.MascotasTipo", "MascotaTipo")
-                        .WithMany("Vacunas")
+                        .WithMany()
                         .HasForeignKey("MascotaTipoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

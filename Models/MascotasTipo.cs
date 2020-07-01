@@ -9,6 +9,8 @@ namespace MascotasApi.Models
         public string Descripcion { get; set; }
         public bool Activo { get; set; }
         public List<Razas> Razas { get; set; }
-        public Calendario calendario { get; set; }
+        public List<Calendario> Calendarios { get; set; }
+        public List<Vacunas> Vacunas { get; set; }
+
     }
 }
