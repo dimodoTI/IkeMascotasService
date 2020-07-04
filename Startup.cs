@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MascotasApi.Helpers;
+using MediatR;
 
 
 namespace MascotasApi
@@ -29,6 +30,8 @@ namespace MascotasApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddMediatR(typeof(Startup));
             services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddAuthorization();
             services.AddControllers();

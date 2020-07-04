@@ -14,6 +14,7 @@ namespace MascotasApi.Models
         public bool Activo { get; set; }
         public Razas Raza { get; set; }
         public List<Reservas> Reservas { get; set; }
+        public List<MascotasVacunas> MascotasVacuna { get; set; }
 
     }
 }
