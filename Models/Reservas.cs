@@ -14,6 +14,8 @@ namespace MascotasApi.Models
         public DateTime FechaGeneracion { get; set; }
         public string Motivo { get; set; }
         public int Estado { get; set; }
+        public int Calificacion {get;set;}
+        public String ComentarioCalificacion { get; set; }
         public bool Activo { get; set; }
         public Tramos Tramo { get; set; }
         public Mascotas Mascota { get; set; }
