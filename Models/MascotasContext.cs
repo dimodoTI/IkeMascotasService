@@ -10,6 +10,13 @@ namespace MascotasApi.Models
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Atenciones>()
+                .HasOne(p => p.Veterinario)
+                .WithMany(u => u.Atenciones)
+                .HasForeignKey(f => f.VeterinarioId);
+
+
             modelBuilder.Entity<Mascotas>()
                 .HasOne(p => p.Raza)
                 .WithMany(b => b.Mascotas)

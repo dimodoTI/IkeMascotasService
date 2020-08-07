@@ -24,6 +24,15 @@ namespace MascotasApi.Helpers
 
         }
 
+        public bool isInRol(ClaimsPrincipal currentUser, string rol)
+        {
+
+            string rolUsuario = currentUser.Claims.First(r => r.Type == ClaimTypes.Role).Value;
+
+            return rolUsuario.ToUpper().Split(" ").Contains(rol.ToUpper());
+
+        }
+
         public int getUserId(ClaimsPrincipal currentUser)
         {
             int idUsuario;

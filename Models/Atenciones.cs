@@ -18,5 +18,7 @@ namespace MascotasApi.Models
         public String ComentarioCalificacion { get; set; }
         public bool Activo { get; set; }
         public Reservas Reserva { get; set; }
+
+        public Usuarios Veterinario { get; set; }
     }
 }

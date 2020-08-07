@@ -31,7 +31,7 @@ namespace MascotasApi.Controllers
 
             IQueryable<Reservas> reservas;
 
-            if (_permissions.isAdmin(this.User))
+            if (_permissions.isAdmin(this.User) || _permissions.isInRol(this.User, "Veterinario"))
             {
                 reservas = _context.Reservas.AsQueryable();
             }
@@ -40,6 +40,18 @@ namespace MascotasApi.Controllers
                 int idUsuario = _permissions.getUserId(this.User);
                 reservas = _context.Reservas.Where(m => m.UsuarioId == idUsuario).AsQueryable();
             }
+            return reservas;
+        }
+
+        [EnableQuery(MaxExpansionDepth = 3)]
+        [AllowAnonymous]
+        public IQueryable<Reservas> GetByClient(int idUsuario)
+        {
+
+            IQueryable<Reservas> reservas;
+
+            reservas = _context.Reservas.Where(m => m.UsuarioId == idUsuario).AsQueryable();
+
             return reservas;
         }
     }
