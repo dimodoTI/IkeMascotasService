@@ -107,6 +107,7 @@ namespace MascotasApi
             odataBuilder.EntitySet<Tramos>("TramosQuery");
             odataBuilder.EntitySet<Reservas>("ReservasQuery");
             odataBuilder.EntitySet<Atenciones>("AtencionesQuery");
+            odataBuilder.EntitySet<Adjuntos>("AdjuntosQuery");
 
             return odataBuilder.GetEdmModel();
         }
