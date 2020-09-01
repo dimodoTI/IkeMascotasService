@@ -22,6 +22,7 @@ namespace MascotasApi.Models
         public Atenciones Atencion { get; set; }
 
         public List<Chat> Chats { get; set; }
+        public List<Adjuntos> Adjuntos { get; set; }
 
     }
 }
