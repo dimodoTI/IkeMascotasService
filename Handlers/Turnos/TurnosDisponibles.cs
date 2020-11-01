@@ -39,7 +39,7 @@ namespace MascotasApi.Handlers.Turnos
             DateTime hoy = DateTime.Today;
             List<Tramos> tramos = _context.Tramos.Where((t) => t.Activo && t.FechaFin >= hoy).ToList();
             Configuracion config = _context.Configuracion.FirstOrDefault();
-            List<Reservas> reservas = _context.Reservas.Where(r => r.FechaAtencion > hoy).ToList();
+            List<Reservas> reservas = _context.Reservas.Where(r => r.FechaAtencion >= hoy).ToList();
             int duracionDelTurno = 60 / config.TurnosxHora;
             List<AgendaDisponibleDTO> agendaDisponible = new List<AgendaDisponibleDTO>();
             for (int i = 0; i < config.DiasReserva; i++)
