@@ -16,5 +16,7 @@ namespace MascotasApi.Models
         public List<Reservas> Reservas { get; set; }
         public List<MascotasVacunas> MascotasVacuna { get; set; }
 
+        public Usuarios Usuarios { get; set; }
+
     }
 }

@@ -11,5 +11,6 @@ namespace MascotasApi.Models
         public string Email { get; set; }
         public bool Activo { get; set; }
         public List<Atenciones> Atenciones { get; set; }
+        public List<Mascotas> Mascotas { get; set; }
     }
 }
