@@ -221,7 +221,7 @@ namespace MascotasApi.Migrations
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsuariosId")
+                    b.Property<int?>("idUsuario")
                         .HasColumnType("int");
 
                     b.Property<int>("idRaza")
@@ -232,7 +232,7 @@ namespace MascotasApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuariosId");
+                    b.HasIndex("idUsuario");
 
                     b.HasIndex("idRaza");
 
@@ -515,7 +515,7 @@ namespace MascotasApi.Migrations
                 {
                     b.HasOne("MascotasApi.Models.Usuarios", "Usuarios")
                         .WithMany("Mascotas")
-                        .HasForeignKey("UsuariosId");
+                        .HasForeignKey("idUsuario");
 
                     b.HasOne("MascotasApi.Models.Razas", "Raza")
                         .WithMany("Mascotas")

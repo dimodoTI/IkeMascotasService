@@ -22,6 +22,12 @@ namespace MascotasApi.Models
                 .WithMany(b => b.Mascotas)
                 .HasForeignKey(f => f.idRaza);
 
+            modelBuilder.Entity<Mascotas>()
+               .HasOne(p => p.Usuario)
+               .WithMany(b => b.Mascotas)
+               .HasForeignKey(f => f.idUsuario);
+
+
             modelBuilder.Entity<Razas>()
                 .HasOne(p => p.MascotasTipo)
                 .WithMany(b => b.Razas)
