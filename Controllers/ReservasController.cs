@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.JsonPatch;
 using MascotasApi.Helpers;
+using mails;
+using Microsoft.Extensions.Configuration;
 
 
 
@@ -23,12 +25,18 @@ namespace MascotasApi.Controllers
     {
         private readonly MascotasContext _context;
         private readonly Permissions _permissions;
+        private readonly IikeMailService _mailService;
+        private readonly IConfiguration _configuration;
 
-        public ReservasController(MascotasContext context)
+        public ReservasController(MascotasContext context, IikeMailService mailService, IConfiguration configuration)
         {
             _context = context;
 
             _permissions = new Permissions();
+            _mailService = mailService;
+            _configuration = configuration;
+
+
 
         }
 
@@ -128,7 +136,33 @@ namespace MascotasApi.Controllers
             }
             _context.Reservas.Add(reservas);
 
+            Mascotas mascota = await _context.Mascotas.FirstOrDefaultAsync(e => e.Id == reservas.MascotaId);
+            Usuarios usu = _context.Usuarios.FirstOrDefault(u => u.Id == reservas.UsuarioId);
             await _context.SaveChangesAsync();
+            DateTime fechaHoy = DateTime.Now.Date;
+
+
+
+            if (fechaHoy.CompareTo(reservas.FechaAtencion.Date) == 0)
+            {
+                var nombreMascota = mascota.Nombre;
+                var cliente = usu.Apellido + ", " + usu.Nombre;
+                var mail = usu.Email;
+                var telefono = usu.Telefono;
+                var fecha = reservas.FechaAtencion.Day.ToString().PadLeft(2, '0') + "/" + reservas.FechaAtencion.Month.ToString().PadLeft(2, '0') + "/" + reservas.FechaAtencion.Year.ToString();
+
+                var hora = reservas.HoraAtencion;
+                var motivo = reservas.Motivo;
+                var body = "<table style='width: 100%;font-family:Verdana;font-size:12px;text-align:left;color: #000000;'><tr style='width: 50%;font-family:Verdana;font-size:12px;text-align:left;color: #000000'><td >Se ha registrado un turno para el día <b>" + fecha + " a las " + hora + " hs</b></td></tr><tr style='width: 50%;font-family:Verdana;font-size:12px;text-align:left;color: #000000;'><td>Nombre de la Mascota <b>" + nombreMascota + "</b></td></tr><tr style='width: 50%;font-family:Verdana;font-size:12px;text-align:left;color: #000000;'><td>Nombre del Cliente <b>" + cliente + "</b></td></tr>  </tr><tr style='width: 50%;font-family:Verdana;font-size:12px;text-align:left;color: #000000;'><td>Telefono del Cliente <b>" + telefono + "</b></td></tr> <tr style='width: 50%;font-family:Verdana;font-size:12px;text-align:left;color: #000000;'><td>Mail del Cliente <b>" + mail + "</b></td></tr> <tr style='width: 50%;font-family:Verdana;font-size:12px;text-align:left;color: #000000;'><td >Motivo de la Consulta</td></tr><tr style='width: 50%;font-family:Verdana;font-size:12px;text-align:left;color: #000000;'><td>" + motivo + "</td></tr></table>";
+
+                AppSettings appSettings = new AppSettings();
+                _configuration.GetSection("AppSettings").Bind(appSettings);
+                await _mailService.sendReservaMail(body, appSettings.mailVeterinario);
+            }
+
+
+
+
 
             return Ok();
         }

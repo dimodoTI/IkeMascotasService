@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MascotasApi.Helpers;
 using MediatR;
-
+using mails;
 
 namespace MascotasApi
 {
@@ -41,7 +41,8 @@ namespace MascotasApi
             services.Configure<AppSettings>(appSettingsSection);
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-
+            var mailToken = appSettings.mailToken;
+            var mailVeterinario = appSettings.mailVeterinario;
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -59,6 +60,10 @@ namespace MascotasApi
                     ValidateAudience = false
                 };
             });
+
+
+
+            services.AddScoped<IikeMailService, IkeMailService>(x => new IkeMailService(new System.Net.Http.HttpClient(), mailToken));
 
             services.AddDbContext<MascotasContext>(opt =>
                             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

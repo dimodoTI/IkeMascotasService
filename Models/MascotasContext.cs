@@ -47,7 +47,7 @@ namespace MascotasApi.Models
         public DbSet<Atenciones> Atenciones { get; set; }
 
         public DbSet<Adjuntos> Adjuntos { get; set; }
-
+        public DbSet<Usuarios> Usuarios { get; set; }
 
 
 
