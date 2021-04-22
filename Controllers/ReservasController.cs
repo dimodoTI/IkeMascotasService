@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using MascotasApi.Helpers;
 using mails;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.Extensions.Logging;
 
 
 namespace MascotasApi.Controllers
@@ -27,17 +27,15 @@ namespace MascotasApi.Controllers
         private readonly Permissions _permissions;
         private readonly IikeMailService _mailService;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<ReservasController> _log;
 
-        public ReservasController(MascotasContext context, IikeMailService mailService, IConfiguration configuration)
+        public ReservasController(MascotasContext context, IikeMailService mailService, IConfiguration configuration, ILogger<ReservasController> logger)
         {
             _context = context;
-
             _permissions = new Permissions();
             _mailService = mailService;
             _configuration = configuration;
-
-
-
+            _log = logger;
         }
 
 
@@ -142,9 +140,10 @@ namespace MascotasApi.Controllers
             DateTime fechaHoy = DateTime.Now.Date;
 
 
-
+            _log.LogInformation("enviando mail");
             if (fechaHoy.CompareTo(reservas.FechaAtencion.Date) == 0)
             {
+                _log.LogInformation("Fecha Correcta " + fechaHoy.ToString());
                 var nombreMascota = mascota.Nombre;
                 var cliente = usu.Apellido + ", " + usu.Nombre;
                 var mail = usu.Email;
@@ -158,6 +157,7 @@ namespace MascotasApi.Controllers
                 AppSettings appSettings = new AppSettings();
                 _configuration.GetSection("AppSettings").Bind(appSettings);
                 await _mailService.sendReservaMail(body, appSettings.mailVeterinario);
+                _log.LogInformation("mail enviado a: " + appSettings.mailVeterinario);
             }
 
 
