@@ -15,6 +15,9 @@ using System.Text;
 using MascotasApi.Helpers;
 using MediatR;
 using mails;
+using Microsoft.Extensions.Logging;
+
+
 
 namespace MascotasApi
 {

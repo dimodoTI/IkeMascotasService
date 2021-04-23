@@ -156,7 +156,7 @@ namespace MascotasApi.Controllers
 
                 AppSettings appSettings = new AppSettings();
                 _configuration.GetSection("AppSettings").Bind(appSettings);
-                await _mailService.sendReservaMail(body, appSettings.mailVeterinario);
+                await _mailService.sendReservaMail(body, appSettings.mailVeterinario, _log);
                 _log.LogInformation("mail enviado a: " + appSettings.mailVeterinario);
             }
 

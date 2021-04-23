@@ -3,14 +3,14 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-
+using Microsoft.Extensions.Logging;
 
 
 namespace mails
 {
     public interface IikeMailService
     {
-        Task<responseMail> sendReservaMail(string body, string emailDestinatario);
+        Task<responseMail> sendReservaMail(string body, string emailDestinatario, ILogger _log);
     }
     public class responseMail
     {
@@ -35,10 +35,12 @@ namespace mails
         private readonly HttpClient _client;
 
         private readonly string _token;
+
         public IkeMailService(HttpClient client, string token)
         {
             _client = client;
             _token = token;
+
         }
         public class requestMail
         {
@@ -57,7 +59,7 @@ namespace mails
 
 
 
-        public Task<responseMail> sendReservaMail(string body, string emailDestinatario)
+        public Task<responseMail> sendReservaMail(string body, string emailDestinatario, ILogger _log)
         {
 
             var request = new requestMail
@@ -73,11 +75,11 @@ namespace mails
 
             };
 
-            return sendMailAsync(request);
+            return sendMailAsync(request, _log);
 
         }
 
-        private async Task<responseMail> sendMailAsync(requestMail request)
+        private async Task<responseMail> sendMailAsync(requestMail request, ILogger _log)
         {
             var content = JsonConvert.SerializeObject(request);
 
@@ -85,6 +87,8 @@ namespace mails
 
             if (!httpResponse.IsSuccessStatusCode)
             {
+
+                _log.LogInformation("mensaje " + httpResponse.ReasonPhrase);
                 // ver que pasa si no puede enviar el mail
                 //throw new Exception("Cannot add a todo task");
             }
